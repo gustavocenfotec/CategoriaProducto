@@ -46,13 +46,13 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    /*public List<Producto> getProductos() {
+    public List<Producto> getProductos() {
         return productos;
     }
 
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
-    }*/
+    }
 
     @Override
     public String toString() {
@@ -60,7 +60,7 @@ public class Categoria {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                //", productos=" + productos +
+                ", productos=" + productos +
                 '}';
     }
 }
