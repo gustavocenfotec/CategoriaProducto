@@ -1,8 +1,6 @@
 package com.project.demo.logic.entity.producto;
 
 import com.project.demo.logic.entity.categoria.Categoria;
-import com.project.demo.logic.entity.order.Order;
-import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,15 +18,9 @@ public class Producto {
     private double precio;
     private int cantidad;
 
-    /*@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
-    private Categoria categoria;*/
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = true)
     private Categoria categoria;
-
-
 
     public Producto() {
     }

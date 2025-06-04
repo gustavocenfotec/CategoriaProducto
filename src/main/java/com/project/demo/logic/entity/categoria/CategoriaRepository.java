@@ -1,7 +1,6 @@
 package com.project.demo.logic.entity.categoria;
 
 import com.project.demo.logic.entity.categoria.Categoria;
-import com.project.demo.logic.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
