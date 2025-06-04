@@ -73,13 +73,13 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-   /* public Categoria getCategoria() {
+   public Categoria getCategoria() {
         return categoria;
     }
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }*/
+    }
 
     @Override
     public String toString() {
@@ -89,7 +89,7 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", precio=" + precio +
                 ", cantidad=" + cantidad +
-                //", categoria=" + categoria +
+                ", categoria=" + categoria +
                 '}';
     }
 }
