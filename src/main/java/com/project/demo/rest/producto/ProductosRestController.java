@@ -29,7 +29,7 @@ public class ProductosRestController {
 
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -49,7 +49,7 @@ public class ProductosRestController {
 
 
     @GetMapping("/{productoId}")
-    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+   //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getOne(@PathVariable Long productoId, HttpServletRequest request) {
         Optional<Producto> foundProducto = productoRepository.findById(productoId);
         if(foundProducto.isPresent()) {
@@ -73,33 +73,40 @@ public class ProductosRestController {
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<?> addProducto(@RequestBody Producto newProducto, HttpServletRequest request) {
 
-        Producto accesProduct= new Producto();
-
-        accesProduct.setNombre(newProducto.getNombre());
-        accesProduct.setDescripcion(newProducto.getNombre());
-        accesProduct.setPrecio(newProducto.getPrecio());
-        accesProduct.setCantidad(newProducto.getCantidad());
-        productoRepository.save(accesProduct);
+        Optional<Producto> foundProductoOpt = productoRepository.findByNombre(newProducto.getNombre());
+        if(foundProductoOpt.isEmpty()){
+//        Producto accesProduct= new Producto();
+//        accesProduct.setNombre(newProducto.getNombre());
+//        accesProduct.setDescripcion(newProducto.getNombre());
+//        accesProduct.setPrecio(newProducto.getPrecio());
+//        accesProduct.setCantidad(newProducto.getCantidad());
+        productoRepository.save(newProducto);
 
         return new GlobalResponseHandler().handleResponse("Producto creado correctamente",
-                accesProduct, HttpStatus.OK, request);
+                newProducto, HttpStatus.OK, request);}
+        else{
+            return new GlobalResponseHandler().handleResponse("Producto ya existe en el sistema" + foundProductoOpt.get().getId() + " no fue encontrado"  ,
+                    HttpStatus.NOT_FOUND, request);
+        }
     }
 
     @PutMapping("/{productoId}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<?> updateProduct(@PathVariable Long productoId, @RequestBody Producto productoActualizado, HttpServletRequest request) {
-        Optional<Producto> foundProducto = productoRepository.findById(productoId);
-        if(foundProducto.isPresent()) {
+        Optional<Producto> foundProductoOpt = productoRepository.findById(productoId);
+        if(foundProductoOpt.isPresent()) {
 
-            Producto accesProduct= new Producto();
+            Producto foundProducto2 = foundProductoOpt.get();
 
-            accesProduct.setNombre(productoActualizado.getNombre());
-            accesProduct.setDescripcion(productoActualizado.getNombre());
-            accesProduct.setPrecio(productoActualizado.getPrecio());
-            accesProduct.setCantidad(productoActualizado.getCantidad());
-            productoRepository.save(accesProduct);
+
+            foundProducto2.setNombre(productoActualizado.getNombre());
+            foundProducto2.setDescripcion(productoActualizado.getDescripcion());
+            foundProducto2.setPrecio(productoActualizado.getPrecio());
+            foundProducto2.setCantidad(productoActualizado.getCantidad());
+            foundProducto2.setCategoria(productoActualizado.getCategoria());
+            productoRepository.save(foundProducto2);
             return new GlobalResponseHandler().handleResponse(":Producto Actualizado correctamente",
-                    accesProduct, HttpStatus.OK, request);
+                    foundProducto2, HttpStatus.OK, request);
         } else {
             return new GlobalResponseHandler().handleResponse("Producto id " + productoId + " no fue encontrado"  ,
                     HttpStatus.NOT_FOUND, request);

@@ -7,7 +7,6 @@ import com.project.demo.logic.entity.categoria.CategoriaRepository;
 
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
-import com.project.demo.logic.entity.producto.Producto;
 import com.project.demo.logic.entity.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class CategoriasRestController {
     private CategoriaRepository categoriaRepository;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -51,7 +50,7 @@ public class CategoriasRestController {
 
 
     @GetMapping("/{categoriaId}")
-    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getOne(@PathVariable Long categoriaId, HttpServletRequest request) {
         Optional<Categoria> foundCategoria = categoriaRepository.findById(categoriaId);
         if(foundCategoria.isPresent()) {
@@ -72,16 +71,23 @@ public class CategoriasRestController {
      */
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
-    public ResponseEntity<?> addProducto(@RequestBody Categoria newCategoria, HttpServletRequest request) {
+    public ResponseEntity<?> addCategoria(@RequestBody Categoria newCategoria, HttpServletRequest request) {
 
-        Categoria accesCategoria= new Categoria();
+        Optional<Categoria> foundCategoriaOpt = categoriaRepository.findByNombre(newCategoria.getNombre());
+        if(foundCategoriaOpt.isEmpty()) {
 
-        accesCategoria.setNombre(newCategoria.getNombre());
-        accesCategoria.setDescripcion(newCategoria.getNombre());
-        categoriaRepository.save(accesCategoria);
+            Categoria accesCategoria = new Categoria();
 
-        return new GlobalResponseHandler().handleResponse("Categoria creado correctamente",
-                accesCategoria, HttpStatus.OK, request);
+            accesCategoria.setNombre(newCategoria.getNombre());
+            accesCategoria.setDescripcion(newCategoria.getNombre());
+            categoriaRepository.save(accesCategoria);
+
+            return new GlobalResponseHandler().handleResponse("Categoria creado correctamente",
+                    accesCategoria, HttpStatus.OK, request);
+        }else {
+            return new GlobalResponseHandler().handleResponse("Categoria ya existe en el sistema con el id: " + foundCategoriaOpt.get().getId() + " y fue encontrado"  ,
+                    HttpStatus.NOT_ACCEPTABLE, request);
+        }
     }
 
     @PutMapping("/{categoriaId}")
@@ -90,8 +96,7 @@ public class CategoriasRestController {
         Optional<Categoria> foundCategoria = categoriaRepository.findById(categoriaId);
         if(foundCategoria.isPresent()) {
 
-            Categoria accesCategoria= new Categoria();
-
+            Categoria accesCategoria= foundCategoria.get();
             accesCategoria.setNombre(categoriaActualizada.getNombre());
             accesCategoria.setDescripcion(categoriaActualizada.getNombre());
             categoriaRepository.save(accesCategoria);
