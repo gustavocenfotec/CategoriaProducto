@@ -63,23 +63,12 @@ public class ProductosRestController {
     }
 
 
-
-    /**
-     * TODO PARA CAMBIAR QUE DEBE SER QUEMADO VARIOS OBJETOS AL INICIALIZAR.
-     *
-     * @author Gustavo Alv
-     */
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<?> addProducto(@RequestBody Producto newProducto, HttpServletRequest request) {
 
         Optional<Producto> foundProductoOpt = productoRepository.findByNombre(newProducto.getNombre());
         if(foundProductoOpt.isEmpty()){
-//        Producto accesProduct= new Producto();
-//        accesProduct.setNombre(newProducto.getNombre());
-//        accesProduct.setDescripcion(newProducto.getNombre());
-//        accesProduct.setPrecio(newProducto.getPrecio());
-//        accesProduct.setCantidad(newProducto.getCantidad());
         productoRepository.save(newProducto);
 
         return new GlobalResponseHandler().handleResponse("Producto creado correctamente",

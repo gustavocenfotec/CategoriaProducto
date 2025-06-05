@@ -64,11 +64,7 @@ public class CategoriasRestController {
     }
 
 
-    /**
-     * TODO PARA CAMBIAR QUE DEBE SER QUEMADO VARIOS OBJETOS AL INICIALIZAR.
-     *
-     * @author Gustavo Alv
-     */
+
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<?> addCategoria(@RequestBody Categoria newCategoria, HttpServletRequest request) {
