@@ -7,6 +7,9 @@ import com.project.demo.logic.entity.categoria.CategoriaRepository;
 
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
+import com.project.demo.logic.entity.order.Order;
+import com.project.demo.logic.entity.producto.Producto;
+import com.project.demo.logic.entity.producto.ProductoRepository;
 import com.project.demo.logic.entity.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +32,11 @@ public class CategoriasRestController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private ProductoRepository productoRepository;
+
     @GetMapping
-    //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -50,10 +56,21 @@ public class CategoriasRestController {
 
 
     @GetMapping("/{categoriaId}")
-    //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getOne(@PathVariable Long categoriaId, HttpServletRequest request) {
         Optional<Categoria> foundCategoria = categoriaRepository.findById(categoriaId);
         if(foundCategoria.isPresent()) {
+
+
+
+//            Pageable pageable = PageRequest.of(page-1, size);
+//            Page<Producto> ordersPage = productoRepository.getProductosBy(userId, pageable);
+//            Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
+//            meta.setTotalPages(ordersPage.getTotalPages());
+//            meta.setTotalElements(ordersPage.getTotalElements());
+//            meta.setPageNumber(ordersPage.getNumber() + 1);
+//            meta.setPageSize(ordersPage.getSize());
+
             categoriaRepository.findById(categoriaId);
             return new GlobalResponseHandler().handleResponse("Producto encontrado de forma correcta",
                     foundCategoria.get(), HttpStatus.OK, request);
@@ -62,6 +79,7 @@ public class CategoriasRestController {
                     HttpStatus.NOT_FOUND, request);
         }
     }
+
 
 
 

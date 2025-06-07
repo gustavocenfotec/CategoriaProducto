@@ -29,7 +29,7 @@ public class ProductosRestController {
 
 
     @GetMapping
-    //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -49,7 +49,7 @@ public class ProductosRestController {
 
 
     @GetMapping("/{productoId}")
-   //@PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getOne(@PathVariable Long productoId, HttpServletRequest request) {
         Optional<Producto> foundProducto = productoRepository.findById(productoId);
         if(foundProducto.isPresent()) {
