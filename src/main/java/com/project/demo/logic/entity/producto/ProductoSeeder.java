@@ -5,11 +5,13 @@ package com.project.demo.logic.entity.producto;
 import com.project.demo.logic.entity.producto.ProductoRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
 import java.util.Optional;
 @Component
+@Order(5)
 public class ProductoSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
 

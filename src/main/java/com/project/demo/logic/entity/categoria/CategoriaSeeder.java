@@ -3,11 +3,13 @@ package com.project.demo.logic.entity.categoria;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
+@Order(4)
 public class CategoriaSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
     private final CategoriaRepository categoriaRepository;

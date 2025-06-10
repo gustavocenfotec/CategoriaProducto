@@ -6,12 +6,14 @@ import com.project.demo.logic.entity.rol.RoleEnum;
 import com.project.demo.logic.entity.rol.RoleRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
+@Order(3)
 public class UserSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
     private final RoleRepository roleRepository;
@@ -31,6 +33,7 @@ public class UserSeeder implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     @Override
+
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         this.createUserNormal();
     }

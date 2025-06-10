@@ -112,7 +112,7 @@ public class CategoriasRestController {
 
             Categoria accesCategoria= foundCategoria.get();
             accesCategoria.setNombre(categoriaActualizada.getNombre());
-            accesCategoria.setDescripcion(categoriaActualizada.getNombre());
+            accesCategoria.setDescripcion(categoriaActualizada.getDescripcion());
             categoriaRepository.save(accesCategoria);
             return new GlobalResponseHandler().handleResponse(":Categoria Actualizado correctamente",
                     accesCategoria, HttpStatus.OK, request);
