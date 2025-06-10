@@ -47,14 +47,6 @@ public class UserRestController {
                 ordersPage.getContent(), HttpStatus.OK, meta);
     }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
-    public ResponseEntity<?> addUser(@RequestBody User user, HttpServletRequest request) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return new GlobalResponseHandler().handleResponse("User updated successfully",
-                user, HttpStatus.OK, request);
-    }
 
     @PutMapping("/{userId}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")

@@ -7,8 +7,6 @@ import com.project.demo.logic.entity.categoria.CategoriaRepository;
 
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
-import com.project.demo.logic.entity.order.Order;
-import com.project.demo.logic.entity.producto.Producto;
 import com.project.demo.logic.entity.producto.ProductoRepository;
 import com.project.demo.logic.entity.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,16 +61,6 @@ public class CategoriasRestController {
                                     HttpServletRequest request) {
         Optional<Categoria> foundCategoria = categoriaRepository.findById(categoriaId);
         if(foundCategoria.isPresent()) {
-
-
-
-//            Pageable pageable = PageRequest.of(page-1, size);
-//            Page<Producto> ordersPage = productoRepository.findProductosCategoria(categoriaId,pageable);
-//            Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
-//            meta.setTotalPages(ordersPage.getTotalPages());
-//            meta.setTotalElements(ordersPage.getTotalElements());
-//            meta.setPageNumber(ordersPage.getNumber() + 1);
-//            meta.setPageSize(ordersPage.getSize());
 
             categoriaRepository.findById(categoriaId);
             return new GlobalResponseHandler().handleResponse("Producto encontrado de forma correcta",
