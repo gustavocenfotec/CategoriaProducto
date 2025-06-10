@@ -1,4 +1,6 @@
 package com.project.demo.rest.producto;
+import com.project.demo.logic.entity.categoria.Categoria;
+import com.project.demo.logic.entity.categoria.CategoriaRepository;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
 import com.project.demo.logic.entity.producto.Producto;
@@ -26,6 +28,9 @@ public class ProductosRestController {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
 
     @GetMapping
@@ -103,12 +108,33 @@ public class ProductosRestController {
     }
 
 
+//    @DeleteMapping("/{productoId}")
+//    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+//    public ResponseEntity<?> deleteProducto(@PathVariable Long productoId, HttpServletRequest request) {
+//        Optional<Producto> foundProducto = productoRepository.findById(productoId);
+//        if(foundProducto.isPresent()) {
+//            productoRepository.deleteById(foundProducto.get().getId());
+//            return new GlobalResponseHandler().handleResponse("Producto borrado de forma correcta",
+//                    foundProducto.get(), HttpStatus.OK, request);
+//        } else {
+//            return new GlobalResponseHandler().handleResponse("Producto id " + productoId + " not found"  ,
+//                    HttpStatus.NOT_FOUND, request);
+//        }
+//    }
+
+
     @DeleteMapping("/{productoId}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<?> deleteProducto(@PathVariable Long productoId, HttpServletRequest request) {
         Optional<Producto> foundProducto = productoRepository.findById(productoId);
         if(foundProducto.isPresent()) {
-            productoRepository.deleteById(productoId);
+            Producto producto = foundProducto.get();
+            Categoria categoria = producto.getCategoria();
+            if (categoria != null) {
+                categoria.getProductos().remove(producto);
+                producto.setCategoria(null);
+                categoriaRepository.save(categoria);
+            }
             return new GlobalResponseHandler().handleResponse("Producto borrado de forma correcta",
                     foundProducto.get(), HttpStatus.OK, request);
         } else {
@@ -116,6 +142,7 @@ public class ProductosRestController {
                     HttpStatus.NOT_FOUND, request);
         }
     }
+
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
