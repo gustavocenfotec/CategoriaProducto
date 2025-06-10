@@ -57,14 +57,17 @@ public class CategoriasRestController {
 
     @GetMapping("/{categoriaId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getOne(@PathVariable Long categoriaId, HttpServletRequest request) {
+    public ResponseEntity<?> getOne(@PathVariable Long categoriaId,
+                                    @RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "10") int size,
+                                    HttpServletRequest request) {
         Optional<Categoria> foundCategoria = categoriaRepository.findById(categoriaId);
         if(foundCategoria.isPresent()) {
 
 
 
 //            Pageable pageable = PageRequest.of(page-1, size);
-//            Page<Producto> ordersPage = productoRepository.getProductosBy(userId, pageable);
+//            Page<Producto> ordersPage = productoRepository.findProductosCategoria(categoriaId,pageable);
 //            Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
 //            meta.setTotalPages(ordersPage.getTotalPages());
 //            meta.setTotalElements(ordersPage.getTotalElements());
@@ -79,6 +82,25 @@ public class CategoriasRestController {
                     HttpStatus.NOT_FOUND, request);
         }
     }
+
+    @GetMapping("/productos/{categoriaId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getProductosCategoria(@PathVariable Long categoriaId,
+                                    @RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "1") int size,
+                                    HttpServletRequest request) {
+        Optional<Categoria> foundCategoria = categoriaRepository.findById(categoriaId);
+        if(foundCategoria.isPresent()) {
+
+            return new GlobalResponseHandler().handleResponse("Categoria encontrada de forma correcta",
+                    foundCategoria.get().getProductos(), HttpStatus.OK, request);
+        } else {
+            return new GlobalResponseHandler().handleResponse("Producto id " + categoriaId + " no encontrado"  ,
+                    HttpStatus.NOT_FOUND, request);
+        }
+    }
+
+
 
 
 
