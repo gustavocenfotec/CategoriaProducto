@@ -48,6 +48,16 @@ public class UserRestController {
     }
 
 
+    @PostMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+    public ResponseEntity<?> addUser(@RequestBody User user, HttpServletRequest request) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return new GlobalResponseHandler().handleResponse("User updated successfully",
+                user, HttpStatus.OK, request);
+    }
+
+
     @PutMapping("/{userId}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, HttpServletRequest request) {
