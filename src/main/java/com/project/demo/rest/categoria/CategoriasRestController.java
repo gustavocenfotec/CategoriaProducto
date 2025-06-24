@@ -103,7 +103,7 @@ public class CategoriasRestController {
             Categoria accesCategoria = new Categoria();
 
             accesCategoria.setNombre(newCategoria.getNombre());
-            accesCategoria.setDescripcion(newCategoria.getNombre());
+            accesCategoria.setDescripcion(newCategoria.getDescripcion());
             categoriaRepository.save(accesCategoria);
 
             return new GlobalResponseHandler().handleResponse("Categoria creado correctamente",
