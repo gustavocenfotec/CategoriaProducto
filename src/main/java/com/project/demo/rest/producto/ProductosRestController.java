@@ -108,6 +108,26 @@ public class ProductosRestController {
 
     
 
+//    @DeleteMapping("/{productoId}")
+//    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+//    public ResponseEntity<?> deleteProducto(@PathVariable Long productoId, HttpServletRequest request) {
+//        Optional<Producto> foundProducto = productoRepository.findById(productoId);
+//        if(foundProducto.isPresent()) {
+//            Producto producto = foundProducto.get();
+//            Categoria categoria = producto.getCategoria();
+//            if (categoria != null) {
+//                categoria.getProductos().remove(producto);
+//                producto.setCategoria(null);
+//                categoriaRepository.save(categoria);
+//            }
+//            return new GlobalResponseHandler().handleResponse("Producto borrado de forma correcta",
+//                    foundProducto.get(), HttpStatus.OK, request);
+//        } else {
+//            return new GlobalResponseHandler().handleResponse("Producto id " + productoId + " not found"  ,
+//                    HttpStatus.NOT_FOUND, request);
+//        }
+//    }
+
     @DeleteMapping("/{productoId}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<?> deleteProducto(@PathVariable Long productoId, HttpServletRequest request) {
@@ -119,6 +139,9 @@ public class ProductosRestController {
                 categoria.getProductos().remove(producto);
                 producto.setCategoria(null);
                 categoriaRepository.save(categoria);
+                productoRepository.deleteById(productoId);
+            }else {
+                productoRepository.deleteById(productoId);
             }
             return new GlobalResponseHandler().handleResponse("Producto borrado de forma correcta",
                     foundProducto.get(), HttpStatus.OK, request);
