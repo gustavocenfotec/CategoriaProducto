@@ -20,11 +20,6 @@ public class Producto {
     private double precio;
     private int cantidad;
 
-//    @ManyToOne(fetch = FetchType.EAGER, optional = true)
-//    @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = true)
-//    @JsonBackReference
-//    @JsonIgnoreProperties("productos")
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id")
     @JsonIgnoreProperties("productos")
