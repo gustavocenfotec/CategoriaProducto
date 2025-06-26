@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -52,6 +53,9 @@ public class ProductosRestController {
     }
 
 
+
+
+
     @GetMapping("/{productoId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getOne(@PathVariable Long productoId, HttpServletRequest request) {
@@ -69,6 +73,7 @@ public class ProductosRestController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+
     public ResponseEntity<?> addProducto(@RequestBody Producto newProducto, HttpServletRequest request) {
 
         Optional<Producto> foundProductoOpt = productoRepository.findByNombre(newProducto.getNombre());
@@ -106,7 +111,7 @@ public class ProductosRestController {
         }
     }
 
-    
+
 
     @DeleteMapping("/{productoId}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
@@ -119,6 +124,9 @@ public class ProductosRestController {
                 categoria.getProductos().remove(producto);
                 producto.setCategoria(null);
                 categoriaRepository.save(categoria);
+                productoRepository.deleteById(productoId);
+            }else {
+                productoRepository.deleteById(productoId);
             }
             return new GlobalResponseHandler().handleResponse("Producto borrado de forma correcta",
                     foundProducto.get(), HttpStatus.OK, request);
