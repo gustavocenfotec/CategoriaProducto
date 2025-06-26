@@ -1,6 +1,7 @@
 package com.project.demo.logic.entity.producto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.demo.logic.entity.categoria.Categoria;
 import jakarta.persistence.*;
 
@@ -21,7 +22,8 @@ public class Producto {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = true)
-    @JsonBackReference
+    @JsonIgnoreProperties("productos")
+
     private Categoria categoria;
 
     public Producto() {
