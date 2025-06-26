@@ -22,8 +22,8 @@ public class Producto {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = true)
+//    @JsonBackReference
     @JsonIgnoreProperties("productos")
-
     private Categoria categoria;
 
     public Producto() {

@@ -2,6 +2,7 @@ package com.project.demo.logic.entity.categoria;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.demo.logic.entity.producto.Producto;
 import jakarta.persistence.*;
@@ -19,7 +20,8 @@ public class Categoria {
     private String descripcion;
 
    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-   @JsonManagedReference
+//   @JsonManagedReference
+   @JsonIgnore
    private List<Producto> productos;
 
     public Categoria() {

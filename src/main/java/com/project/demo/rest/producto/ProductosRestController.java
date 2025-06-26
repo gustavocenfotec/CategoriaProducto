@@ -73,6 +73,7 @@ public class ProductosRestController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+
     public ResponseEntity<?> addProducto(@RequestBody Producto newProducto, HttpServletRequest request) {
 
         Optional<Producto> foundProductoOpt = productoRepository.findByNombre(newProducto.getNombre());
