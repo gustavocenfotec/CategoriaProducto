@@ -19,9 +19,10 @@ public class Categoria {
     private String nombre;
     private String descripcion;
 
-   @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//   @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 //   @JsonManagedReference
-   @JsonIgnore
+//   @JsonIgnore
+@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
    private List<Producto> productos;
 
     public Categoria() {
